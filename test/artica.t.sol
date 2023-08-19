@@ -18,6 +18,8 @@ contract ArticaTest is Test {
     uint256 internal _ownerPrivateKey;
 
     address internal _owner;
+    // solhint-disable-next-line
+    bytes signature;
 
     function setUp() public {
         _factory = new ARTICAFactory();
@@ -38,32 +40,57 @@ contract ArticaTest is Test {
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(_ownerPrivateKey, digest);
 
-        _dig.verify(_identity.wallet, "Africa", "ACA", v, r, s);
-        bytes memory signature = combineSignature(v, r, s);
+        signature = combineSignature(v, r, s);
+
         // console.logBytes(signature);
-
-        _dig.splitSignatureAndVerify(signature, _owner, "Africa", "ACA");
-
-        vm.startPrank(_owner);
-        _artica2 = new ARTICA("Africa", "ACA", "rta77", _owner, signature);
-        // _artica2.init(signature, _owner);
-        vm.stopPrank();
+        // _dig.verify(_identity.wallet, "Africa", "ACA", v, r, s);
+        // _dig.splitSignatureAndVerify(signature, _owner, "Africa", "ACA");
     }
 
     // solhint-disable-next-line
-
     function test_Identity() public {
         vm.startPrank(_owner);
-        // console.logAddress(_owner);
-        // _artica1 = _factory.createNFT(
-        //     "Africa",
-        //     "ACA",
-        //     "rta77",
-        //     _owner,
-        //     signature
-        // );
+        //create an nft with the factory
+        _artica1 = _factory.createNFT("Africa", "ACA", "rta77", signature);
+        //check the metadata return for the only nft
+        _artica1.tokenURI(1);
 
-        console.logAddress(address(_artica2));
+        //test for Auction stage
+        _artica1.auctionNFT(3 days, 7 days, 1 ether);
+
+        vm.stopPrank();
+        address bidder = makeAddr("bidder");
+        vm.deal(bidder, 3 ether);
+        vm.startPrank(bidder);
+        //test for failed bid before startTime
+        vm.expectRevert("Invalid Auction period!");
+        _artica1.bid{value: 3 ether}();
+        //test for a valid bid ina valid period
+        vm.warp(block.timestamp + 3 days);
+        _artica1.bid{value: 3 ether}();
+
+        vm.stopPrank();
+        // test for failed bid with lower fee
+        address bidder2 = makeAddr("bidder1");
+        vm.deal(bidder2, 3.5 ether);
+        vm.startPrank(bidder2);
+        vm.expectRevert("low bid");
+        _artica1.bid{value: 2 ether}();
+        _artica1.bid{value: 3.5 ether}();
+        vm.stopPrank();
+        console.log(
+            bidder.balance,
+            bidder2.balance,
+            _owner.balance,
+            address(_artica1).balance
+        );
+        //end Auction
+        vm.warp(block.timestamp + 7 days);
+        _artica1.end();
+
+        //check all state are correct
+        assert(_artica1.ownerOf(1) == bidder2 && bidder2.balance == 0);
+        assert(_owner.balance == 3.5 ether && _artica1.ownerOf(1) != _owner);
     }
 
     function combineSignature(
@@ -74,3 +101,4 @@ contract ArticaTest is Test {
         return abi.encodePacked(r, s, v);
     }
 }
+// 9 500 000 000 000 000 000

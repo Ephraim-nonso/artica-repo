@@ -13,7 +13,7 @@ contract ARTICAFactory {
         string memory _metadata,
         bytes memory signature
     ) external returns (ARTICA _addr) {
-        _addr = new ARTICA(_name, _sym, _metadata, msg.sender, signature);
+        _addr = new ARTICA(signature, _name, _sym, _metadata, msg.sender);
         _artica.push(address(_addr));
         emit Creation(address(_addr));
         // _addr.init(signature, msg.sender);
