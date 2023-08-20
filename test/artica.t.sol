@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import {Test, console} from "forge-std/Test.sol";
 import {ARTICAFactory} from "../src/ARTICAFactory.sol";
 import {DigitalSignature} from "../src/DigitalSignature.sol";
-import {ARTICA} from "../src/NFTsMADEbyARTICA.sol";
+import {ARTICA} from "../src/ARTICA.sol";
 import {SigUtils} from "./sigutils.sol";
 
 contract ArticaTest is Test {
@@ -13,7 +13,6 @@ contract ArticaTest is Test {
 
     ARTICAFactory _factory;
     SigUtils _utils;
-    DigitalSignature _dig;
 
     uint256 internal _ownerPrivateKey;
 
@@ -23,10 +22,16 @@ contract ArticaTest is Test {
 
     function setUp() public {
         _factory = new ARTICAFactory();
-        _dig = new DigitalSignature();
-        _utils = new SigUtils(_dig.DOMAIN_SEPARATOR());
+        _artica2 = new ARTICA(
+            bytes("0xerf245"),
+            "test",
+            "tet",
+            "meta",
+            msg.sender
+        );
+        _utils = new SigUtils(_artica2.getDomain());
 
-        _ownerPrivateKey = 0xA11CE;
+        _ownerPrivateKey = 0xb47c0bcc14aa16bda3be52f08eb103d156d5ba3c61aec4623b76bafa30a51229;
         _owner = vm.addr(_ownerPrivateKey);
 
         //trial
@@ -37,12 +42,13 @@ contract ArticaTest is Test {
         });
 
         bytes32 digest = _utils.getTypedDataHash(_identity);
+        // console.logBytes(digest);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(_ownerPrivateKey, digest);
 
         signature = combineSignature(v, r, s);
 
-        // console.logBytes(signature);
+        console.logBytes(signature);
         // _dig.verify(_identity.wallet, "Africa", "ACA", v, r, s);
         // _dig.splitSignatureAndVerify(signature, _owner, "Africa", "ACA");
     }
@@ -54,6 +60,8 @@ contract ArticaTest is Test {
         _artica1 = _factory.createNFT("Africa", "ACA", "rta77", signature);
         //check the metadata return for the only nft
         _artica1.tokenURI(1);
+        // _artica1.royalOwner(signature);
+        _artica1.getDomain();
 
         //test for Auction stage
         _artica1.auctionNFT(3 days, 7 days, 1 ether);

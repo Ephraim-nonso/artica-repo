@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity 0.8.19;
 
 import {ERC721} from "openzeppelin/token/ERC721/ERC721.sol";
 import {DigitalSignature} from "./DigitalSignature.sol";
 
-contract ARTICA is ERC721, DigitalSignature {
-    uint256 public number;
+contract ARTICA is ERC721 {
     string public baseURI;
+
+    mapping(bytes => address) _signed;
+
     struct Auction {
         uint256 start; // the beginning of the Auction (block.timestamp + start)
         uint256 end; // the deadline of the Auction (block.timestamp + deadline)
@@ -39,6 +41,10 @@ contract ARTICA is ERC721, DigitalSignature {
         emit sign(_minter);
     }
 
+    function getDomain() external returns (bytes32) {
+        return DigitalSignature.DOMAIN_SEPARATOR();
+    }
+
     function _baseURI() internal view override returns (string memory) {
         return baseURI;
     }
@@ -48,7 +54,12 @@ contract ARTICA is ERC721, DigitalSignature {
         bytes calldata sig
     ) external view returns (address owner, bool status) {
         owner = _signed[sig];
-        status = splitSignatureAndVerify(sig, owner, name(), symbol());
+        status = DigitalSignature.splitSignatureAndVerify(
+            sig,
+            owner,
+            name(),
+            symbol()
+        );
         require(status, "invalid signer");
     }
 

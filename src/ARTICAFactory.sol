@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
-import {ARTICA} from "./NFTsMADEbyARTICA.sol";
+pragma solidity 0.8.19;
+import {ARTICA} from "./ARTICA.sol";
+import {ArticaTicket} from "./ArticaTicket.sol";
 
-contract ARTICAFactory {
+import {Ownable} from "openzeppelin/access/Ownable.sol";
+
+contract ARTICAFactory is Ownable {
     address[] _artica;
+    address[] _articaTicket;
 
     event Creation(address indexed _addr);
 
@@ -17,6 +21,14 @@ contract ARTICAFactory {
         _artica.push(address(_addr));
         emit Creation(address(_addr));
         // _addr.init(signature, msg.sender);
+    }
+
+    function DeployArticaTicket(
+        string memory _name,
+        string memory _symbol
+    ) external onlyOwner returns (ArticaTicket _tAddr) {
+        _tAddr = new ArticaTicket(_name, _symbol);
+        _articaTicket.push(address(_tAddr));
     }
 
     function getAllArticaNFT()

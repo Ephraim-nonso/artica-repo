@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity 0.8.19;
 
-contract DigitalSignature {
-    mapping(bytes => address) _signed;
-
+library DigitalSignature {
     struct Identity {
         address wallet;
         string name;
@@ -18,14 +16,14 @@ contract DigitalSignature {
         );
 
     // solhint-disable-next-line
-    function DOMAIN_SEPARATOR() public view returns (bytes32) {
+    function DOMAIN_SEPARATOR() internal view returns (bytes32) {
         return
             keccak256(
                 abi.encode(
                     _EIP712_DOMAIN_TYPEHASH,
-                    keccak256(bytes("ARTICA dApp")),
+                    keccak256(bytes("ARTICA DApp")),
                     keccak256(bytes("1")),
-                    block.chainid,
+                    uint256(block.chainid),
                     address(this)
                 )
             );
@@ -80,7 +78,7 @@ contract DigitalSignature {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public view virtual returns (address recoveredAddress, bool status) {
+    ) internal view returns (address recoveredAddress, bool status) {
         recoveredAddress = ecrecover(
             keccak256(
                 abi.encodePacked(
