@@ -1,0 +1,117 @@
+
+.header {
+  background-color: black;
+  padding-top: 45px;
+  padding-bottom: 45px;
+}
+
+.global {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.sect {
+  margin-top: 8%;
+}
+.sec {
+  margin-top: 7%;
+}
+.see {
+  margin-top: 12%;
+}
+.create {
+  color: #9747ff;
+  list-style: none;
+}
+.artica {
+  background: linear-gradient(to right, #9747ff, #ff0000);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  font-size: 30px;
+}
+.bLast {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 2mm;margin-top: 5%;
+}
+.last {
+  background-image: url(./Component/Image/Rectangle\ 34.png);
+  width: 100%;
+  height: 35vh;
+  background-size: cover;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300vh;
+  background-color: rgba(0, 0, 0, 0.6,);
+  backdrop-filter: blur(1px);
+  z-index: 2;
+  transition: ease;
+}
+.edit {
+  background: linear-gradient(to right, #9747ff, #ff0000);
+  padding: 0px 20px;
+  border-radius: 3mm;
+  font-size: 20px;
+}
+@media (max-width: 640px) {
+  .global {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .sect {
+    display: flex;
+    justify-content: center;
+  }
+  .last{
+    padding-top: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .bLast {
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 2mm;margin-top: 5%;
+  }
+  .edit {
+    font-size: 16px;
+  }
+}
+
+.scroll {
+  /* flex overflow-auto whitespace-nowrap w-full */
+  display: flex;
+  overflow: auto;
+  white-space: nowrap;
+  width: 100%;
+}
+.scroll::-webkit-scrollbar {
+  width: 0;
+}
+.boy {
+  font-size: 36px;
+}
+.dark {
+  background: linear-gradient(to bottom, #141313 5%, #2b2a2b 100%);
+}
+@media (max-width: 640px) {
+  .low {
+    font-size: 30px;
+  }
+}
+
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
