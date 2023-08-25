@@ -36,7 +36,7 @@ const Timer = () => {
 
   const notify = () => {
     return !!address
-      ? isError
+      ? !!error
         ? toast("Failed!")
         : null
       : toast("Please connect wallet...");
@@ -49,7 +49,7 @@ const Timer = () => {
     functionName: "mint",
   });
 
-  const { isLoading, write, isError } = useContractWrite(config);
+  const { isLoading, write, isError, error } = useContractWrite(config);
 
   return (
     <div>
