@@ -5,9 +5,7 @@ import Paint from "./Image/paint-photography-desktop-wallpaper-black-and-white-s
 import IntroPic from "./Image/Mask group.png";
 import Explore from "./Explore";
 import TrusUs from "./TrusUs";
-import { Route, Routes } from "react-router-dom";
 import Revpopup from "./Revpopup";
-import All from "./Auction/All";
 import { motion } from "framer-motion";
 import ConnectWallet from "./buttons/ConnectWallet";
 import Search from "./inputs/Search";

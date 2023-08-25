@@ -1,6 +1,4 @@
 import React from "react";
-import Artica from "../Image/air.png";
-import Owner from "../Image/carbon_user-avatar-filled.png";
 import ConnectWallet from "../buttons/ConnectWallet";
 import Search from "../inputs/Search";
 import BrandLogo from "../brand/BrandLogo";

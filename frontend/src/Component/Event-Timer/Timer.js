@@ -35,9 +35,11 @@ const Timer = () => {
   // console.log(address);
 
   const notify = () => {
-    // !!isSuccess ? toast("Wow so easy!") : toast("Tx cancelled");
-
-    return !!address ? null : toast("Please connect wallet...");
+    return !!address
+      ? isError
+        ? toast("Failed!")
+        : null
+      : toast("Please connect wallet...");
   };
 
   // mint ticket func
@@ -47,8 +49,7 @@ const Timer = () => {
     functionName: "mint",
   });
 
-  const { data, isLoading, isSuccess, write, error, isError } =
-    useContractWrite(config);
+  const { isLoading, write, isError } = useContractWrite(config);
 
   return (
     <div>

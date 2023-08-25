@@ -1,5 +1,4 @@
 import React from "react";
-import Artica from "./Image/air.png";
 import {
   FaTwitter,
   FaTelegram,

@@ -6,11 +6,6 @@ import Three from "./Image/Component 6.png";
 import { motion } from "framer-motion";
 
 function Intro() {
-  const animation = {
-    initial: { opacity: 0, y: 200, x: 100, scale: 0 },
-    animate: { opacity: 1, x: 100, y: 5, scale: 1 },
-  };
-
   return (
     <div>
       <section className="sec">

@@ -1,6 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import FirstSlides from "./FirstSlides";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Artica from "./Image/Explore Artica.png";
 import SecondSlide from "./SecondSlide";
@@ -16,12 +14,6 @@ function Explore() {
   };
 
   useEffect(() => {}, []);
-
-  const image = [
-    {
-      url: "Image.section3pic1.png",
-    },
-  ];
 
   const categories = ["All", "Paintings", "Murals", "NFTs", "Physical"];
 
@@ -52,30 +44,6 @@ function Explore() {
           </div>
 
           <div className="pt-3 text-xl flex gap-5">{display}</div>
-          {/* <motion.div className="flex">
-            <motion.div className="flex gap-4 list-none pt-8">
-              {FirstSlides.map((img, i) => {
-                return (
-                  <motion.div>
-                    <img src={img} alt="" key={i} />
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.div> */}
-          {/* <motion.div className="flex">
-            {items.map(({ item, category }) => {
-              return (
-                category === slides && (
-                  <div className="flex gap-4 list-none pt-8">
-                    {item.map((image, i) => {
-                      return <img src={image} />;
-                    })}
-                  </div>
-                )
-              );
-            })}
-          </motion.div> */}
 
           <Slides slides={slides} />
 
